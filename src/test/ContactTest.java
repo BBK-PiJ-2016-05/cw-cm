@@ -12,9 +12,11 @@ import static org.junit.Assert.*;
  * Created by Duncan on 04/03/2017.
  */
 public class ContactTest {
+    private Contact duncan;
+
     @Before
     public void setUp(){
-
+        duncan = new ContactImpl("Duncan", "Duncan is great");
     }
 
     @After
@@ -25,7 +27,7 @@ public class ContactTest {
     @Test
     public void testSimpleContactConstructor(){
         try{
-            Contact Duncan = new ContactImpl("Duncan");
+            Contact robert = new ContactImpl("Robert");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -34,7 +36,7 @@ public class ContactTest {
     @Test
     public void testOtherContactConstructor(){
         try{
-            Contact Duncan = new ContactImpl("Duncan", "Duncan is great");
+            Contact robert = new ContactImpl("Robert", "Duncan is okay");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -43,19 +45,18 @@ public class ContactTest {
 
     @Test
     public void testContactGetName(){
-        Contact Duncan = new ContactImpl("Duncan", "Duncan is great");
-        assertEquals("Duncan",Duncan.getName());
+        assertEquals("Duncan",duncan.getName());
     }
 
     @Test
     public void testContactGetNotes(){
-        Contact Duncan = new ContactImpl("Duncan", "Duncan is great");
-        assertEquals("Duncan is great",Duncan.getNotes());
+        assertEquals("Duncan is great",duncan.getNotes());
     }
 
     @Test
-    public void addNotes() throws Exception {
-
+    public void testContactAddNotes(){
+        duncan.addNotes("at programming in Java");
+        assertEquals("Duncan is great at programming in Java", duncan.getNotes());
     }
 
     @Test

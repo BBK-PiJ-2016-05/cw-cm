@@ -45,14 +45,14 @@ public class ContactImpl implements Contact {
     }
 
     public String getName(){
-        return "";
+        return name;
     }
 
     public String getNotes(){
-        return "";
+        return notes;
     }
 
     public void addNotes(String note){
-
+        notes = notes + " " + note;
     }
 }
