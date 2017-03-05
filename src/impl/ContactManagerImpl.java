@@ -2,14 +2,16 @@ package impl;
 
 import spec.*;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Duncan on 04/03/2017.
  */
 public class ContactManagerImpl implements ContactManager {
+
+    private int nextContactID=1;
+    private Set<Contact> allContacts = new LinkedHashSet<Contact>();
+
     public int addFutureMeeting(Set<Contact> contacts, Calendar date){
         return 0;
     }
@@ -47,7 +49,23 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public int addNewContact(String name, String notes){
-        return 0;
+
+        Contact contactToAdd;
+
+        try {
+            contactToAdd = new ContactImpl(nextContactID, name, notes);
+        }
+        catch (NullPointerException|IllegalArgumentException e){
+            throw e;
+        }
+
+        if (name.equals("") || notes.equals("")){
+            throw new IllegalArgumentException("one or more of the parameters was blank");
+        }
+
+        allContacts.add(contactToAdd);
+        nextContactID ++;
+        return contactToAdd.getId();
     }
 
     public Set<Contact> getContacts(String name){

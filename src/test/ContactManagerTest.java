@@ -110,6 +110,11 @@ public class ContactManagerTest {
         }
     }
 
+    @Test
+    public void testAddNewContact(){
+        myContactManager.addNewContact("Duncan", "Duncan is great");
+    }
+
 
 
     @Test

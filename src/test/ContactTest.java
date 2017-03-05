@@ -16,7 +16,7 @@ public class ContactTest {
 
     @Before
     public void setUp(){
-        duncan = new ContactImpl("Duncan", "Duncan is great");
+        duncan = new ContactImpl(1, "Duncan", "Duncan is great");
     }
 
     @After
@@ -27,7 +27,7 @@ public class ContactTest {
     @Test
     public void testSimpleContactConstructor(){
         try{
-            Contact robert = new ContactImpl("Robert");
+            Contact robert = new ContactImpl(2, "Robert");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -36,7 +36,7 @@ public class ContactTest {
     @Test
     public void testOtherContactConstructor(){
         try{
-            Contact robert = new ContactImpl("Robert", "Duncan is okay");
+            Contact robert = new ContactImpl(2, "Robert", "Duncan is okay");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -61,7 +61,7 @@ public class ContactTest {
 
     @Test
     public void testContactGetId(){
-
+        assertEquals(1,duncan.getId());
     }
 
 }

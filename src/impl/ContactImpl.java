@@ -13,17 +13,26 @@ public class ContactImpl implements Contact {
     private int id;
 
     /**
-     * most general constructor where the ID is provided by the ContactManager
+     * most general constructor with three parameters:
+     * @param id the ID provided by the ContactManager
      * @param name the name
      * @param initialNotes the initial set of notes about the contact
      * @throws IllegalArgumentException if the ID provided is zero or negative
      * @throws NullPointerException if any of the references / pointers passed as
      *      parameters to the constructor is null
      */
-    public ContactImpl(String name, String initialNotes){
+    public ContactImpl(int id, String name, String initialNotes){
+
+        if (name==null || initialNotes==null){
+            throw new NullPointerException("one or more parameter was null");
+        }
+        if (id<=0){
+            throw new IllegalArgumentException("ID provided is zero or negative");
+        }
+
         this.name = name;
         this.notes = initialNotes;
-        //this.id = myContactManager.addNewContact(name, initialNotes);
+        this.id = id;
     }
 
     /**
@@ -33,15 +42,15 @@ public class ContactImpl implements Contact {
      * @throws NullPointerException if any of the references / pointers passed as
      *      parameters to the constructor is null
      */
-    public ContactImpl(String name){
+    public ContactImpl(int id, String name){
         this.name = name;
         this.notes = "";
-        //this.id = myContactManager.addNewContact(name, initialNotes);
+        this.id = id;
 
     }
 
     public int getId(){
-        return 0;
+        return id;
     }
 
     public String getName(){
