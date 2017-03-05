@@ -23,7 +23,7 @@ public class ContactTest {
     }
 
     @Test
-    public void testSimpleContactInstructor(){
+    public void testSimpleContactConstructor(){
         try{
             Contact Duncan = new ContactImpl("Duncan");
         } catch (Exception e){
@@ -32,22 +32,34 @@ public class ContactTest {
     }
 
     @Test
-    public void getId() throws Exception {
+    public void testOtherContactConstructor(){
+        try{
+            Contact Duncan = new ContactImpl("Duncan", "Duncan is great");
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
 
+
+    @Test
+    public void testContactGetName(){
+        Contact Duncan = new ContactImpl("Duncan", "Duncan is great");
+        assertEquals("Duncan",Duncan.getName());
     }
 
     @Test
-    public void getName() throws Exception {
-
-    }
-
-    @Test
-    public void getNotes() throws Exception {
-
+    public void testContactGetNotes(){
+        Contact Duncan = new ContactImpl("Duncan", "Duncan is great");
+        assertEquals("Duncan is great",Duncan.getNotes());
     }
 
     @Test
     public void addNotes() throws Exception {
+
+    }
+
+    @Test
+    public void testContactGetId(){
 
     }
 
