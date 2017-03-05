@@ -3,6 +3,8 @@ package test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import spec.ContactManager;
+import impl.ContactManagerImpl;
 
 import static org.junit.Assert.*;
 
@@ -10,9 +12,12 @@ import static org.junit.Assert.*;
  * Created by Duncan on 04/03/2017.
  */
 public class ContactManagerTest {
+    private ContactManager myContactManager;
+
+
     @Before
     public void setUp() throws Exception {
-
+        myContactManager = new ContactManagerImpl();
     }
 
     @After
@@ -66,9 +71,46 @@ public class ContactManagerTest {
     }
 
     @Test
-    public void addNewContact() throws Exception {
-
+    public void testAddNewContactExceptionsNoName(){
+        try{
+            myContactManager.addNewContact(null, "Duncan is great");
+            fail();
+        } catch (NullPointerException e){
+            System.out.println(e.getMessage());
+        }
     }
+
+    @Test
+    public void testAddNewContactExceptionsNoNotes(){
+        try{
+            myContactManager.addNewContact("Duncan", null);
+            fail();
+        } catch (NullPointerException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testAddNewContactExceptionsEmptyName(){
+        try{
+            myContactManager.addNewContact("", "Duncan is great");
+            fail();
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testAddNewContactExceptionsEmptyNotes(){
+        try{
+            myContactManager.addNewContact("Duncan", "");
+            fail();
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
 
     @Test
     public void getContacts() throws Exception {
