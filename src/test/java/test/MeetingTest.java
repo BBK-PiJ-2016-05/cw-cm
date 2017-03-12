@@ -1,6 +1,5 @@
-package test;
+package test.java.test;
 
-import org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;

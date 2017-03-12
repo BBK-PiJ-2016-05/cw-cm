@@ -1,6 +1,6 @@
-package impl;
+package main.java.impl;
 
-import spec.Contact;
+import main.java.spec.Contact;
 
 /**
  * Created by Duncan on 04/03/2017.

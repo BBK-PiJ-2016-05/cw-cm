@@ -1,10 +1,10 @@
-package test;
+package test.java.test;
 
-import impl.ContactImpl;
+import main.java.impl.ContactImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import spec.Contact;
+import main.java.spec.Contact;
 
 import static org.junit.Assert.*;
 

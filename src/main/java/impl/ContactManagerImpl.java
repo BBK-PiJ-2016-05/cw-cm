@@ -1,6 +1,6 @@
-package impl;
+package main.java.impl;
 
-import spec.*;
+import main.java.spec.*;
 
 import java.util.*;
 
@@ -9,7 +9,6 @@ import java.util.*;
  */
 public class ContactManagerImpl implements ContactManager {
 
-    private int nextContactID=1;
     private Set<Contact> allContacts = new LinkedHashSet<Contact>();
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date){
@@ -51,9 +50,17 @@ public class ContactManagerImpl implements ContactManager {
     public int addNewContact(String name, String notes){
 
         Contact contactToAdd;
+        int contactId;
+
+        if (allContacts.isEmpty()){
+            contactId = 1;
+        }
+        else{
+            contactId = allContacts.size()+1;
+        }
 
         try {
-            contactToAdd = new ContactImpl(nextContactID, name, notes);
+            contactToAdd = new ContactImpl(contactId, name, notes);
         }
         catch (NullPointerException|IllegalArgumentException e){
             throw e;
@@ -64,7 +71,6 @@ public class ContactManagerImpl implements ContactManager {
         }
 
         allContacts.add(contactToAdd);
-        nextContactID ++;
         return contactToAdd.getId();
     }
 
