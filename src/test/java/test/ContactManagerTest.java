@@ -35,10 +35,10 @@ public class ContactManagerTest {
         myContactManager.addNewContact("Geoff Jones", "Geoff is Duncan's father");
         myContactManager.addNewContact("Jenny Denman", "Jenny is Duncan's aunt");
         myContactManager.addNewContact("Phil Denman", "Phil is Duncan's uncle");
-        Calendar futureDate = Calendar.getInstance();
+        futureDate = Calendar.getInstance();
         futureDate.add(Calendar.MONTH, 3);
-        Calendar pastDate = Calendar.getInstance();
-        futureDate.add(Calendar.MONTH, 3);
+        pastDate = Calendar.getInstance();
+        pastDate.add(Calendar.MONTH, -3);
         Contact unknownContact = new ContactImpl(12, "Freddie", "No one knows Freddie");
         unknownPeople = new LinkedHashSet<Contact>();
         unknownPeople.add(unknownContact);
@@ -53,6 +53,10 @@ public class ContactManagerTest {
 
     @Test
     public void testAddFutureMeetingExceptions(){
+
+        if(pastDate==null){
+            System.out.println("pastDate is null");
+        }
 
         try {
             myContactManager.addFutureMeeting(everyone, pastDate);

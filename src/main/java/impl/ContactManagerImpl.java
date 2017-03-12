@@ -10,9 +10,52 @@ import java.util.*;
 public class ContactManagerImpl implements ContactManager {
 
     private Set<Contact> allContacts = new LinkedHashSet<Contact>();
+    private Set<Meeting> allMeetings = new LinkedHashSet<Meeting>();
+
+    private boolean contactsExist(Set<Contact> contacts){
+        for (Contact contactToTest : contacts){
+            boolean contactExists = false;
+            for (Contact contactThatExists: allContacts){
+                if(contactToTest.equals(contactThatExists)){
+                    contactExists = true;
+                }
+            }
+            if (!contactExists){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date){
-        return 0;
+        Meeting meetingToAdd;
+        int meetingId;
+
+        if (allMeetings.isEmpty()){
+            meetingId=1;
+        }
+        else{
+            meetingId=allMeetings.size()+1;
+        }
+
+        try {
+            meetingToAdd = new FutureMeetingImpl(meetingId, date, contacts);
+        }
+        catch (NullPointerException e){
+            throw new NullPointerException("the contact list or the date is null");
+        }
+
+        Calendar nowDate = Calendar.getInstance();
+        if(date.before(nowDate)){
+            throw new IllegalArgumentException("the meeting is set for a time in the past");
+        }
+
+        if(!contactsExist(contacts)){
+            throw new IllegalArgumentException("a contact is unknown or non-existent");
+        }
+
+        allMeetings.add(meetingToAdd);
+        return meetingId;
     }
 
     public PastMeeting getPastMeeting(int id){
