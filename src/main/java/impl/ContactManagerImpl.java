@@ -91,7 +91,29 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(int... ids){
-        return null;
+
+        if(ids==null || ids.length == 0){
+            throw new IllegalArgumentException("no IDs are provided");
+        }
+
+        Set<Contact> contactsToReturn = new LinkedHashSet<Contact>();
+        boolean isReal;
+
+        for (int id : ids) {
+            isReal = false;
+            for (Contact eachContact : allContacts) {
+                if (id == eachContact.getId()) {
+                    contactsToReturn.add(eachContact);
+                    isReal = true;
+                }
+            }
+            if (!isReal){
+                throw new IllegalArgumentException("one of the provided IDs does not correspond to a real contact");
+            }
+        }
+
+        return contactsToReturn;
+
     }
 
     public void flush(){

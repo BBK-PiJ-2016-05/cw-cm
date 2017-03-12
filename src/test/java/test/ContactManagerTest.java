@@ -164,7 +164,24 @@ public class ContactManagerTest {
         assertEquals(5, everyone.size());
         assertEquals("Duncan Jones", ((Contact) theJoneses.toArray()[0]).getName());
         assertEquals("Phil is Duncan's uncle", ((Contact) theDenmans.toArray()[1]).getNotes());
+
+        try{
+            Set<Contact> emptySet = myContactManager.getContacts();
+            fail();
+        } catch (IllegalArgumentException e){
+            assertEquals("no IDs are provided",e.getMessage());
+        }
+
+        try{
+            Set<Contact> wrongId = myContactManager.getContacts(6);
+            fail();
+        } catch (IllegalArgumentException e){
+            assertEquals("one of the provided IDs does not correspond to a real contact",e.getMessage());
+        }
+
     }
+
+
 
     @Test
     public void flush() throws Exception {
