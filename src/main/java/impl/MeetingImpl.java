@@ -27,7 +27,7 @@ public abstract class MeetingImpl implements Meeting {
     public MeetingImpl(int ID, Calendar date, Set<Contact> contacts){
 
         if(date==null||contacts==null){
-            throw new NullPointerException("one of the references / pointers passed as parameters is null");
+            throw new NullPointerException("the contact list or the date is null");
         }
         if(contacts.isEmpty()){
             throw new IllegalArgumentException("the set of contacts is empty");

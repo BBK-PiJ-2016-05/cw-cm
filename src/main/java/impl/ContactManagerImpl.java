@@ -45,13 +45,13 @@ public class ContactManagerImpl implements ContactManager {
             throw new NullPointerException("the contact list or the date is null");
         }
 
+        if(!contactsExist(contacts)){
+            throw new IllegalArgumentException("a contact is unknown or non-existent");
+        }
+
         Calendar nowDate = Calendar.getInstance();
         if(date.before(nowDate)){
             throw new IllegalArgumentException("the meeting is set for a time in the past");
-        }
-
-        if(!contactsExist(contacts)){
-            throw new IllegalArgumentException("a contact is unknown or non-existent");
         }
 
         allMeetings.add(meetingToAdd);
@@ -82,8 +82,35 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
-    public int addNewPastMeeting(Set<Contact> contact, Calendar date, String text){
-        return 0;
+    public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text){
+        Meeting meetingToAdd;
+        int meetingId;
+
+        if (allMeetings.isEmpty()){
+            meetingId=1;
+        }
+        else{
+            meetingId=allMeetings.size()+1;
+        }
+
+        try {
+            meetingToAdd = new PastMeetingImpl(meetingId, date, contacts, text);
+        }
+        catch (NullPointerException e){
+            throw e;
+        }
+
+        if(!contactsExist(contacts)){
+            throw new IllegalArgumentException("a contact is unknown or non-existent");
+        }
+
+        Calendar nowDate = Calendar.getInstance();
+        if(date.after(nowDate)){
+            throw new IllegalArgumentException("the meeting is set for a time in the future");
+        }
+
+        allMeetings.add(meetingToAdd);
+        return meetingId;
     }
 
     public PastMeeting addMeetingNotes(int id, String text){
