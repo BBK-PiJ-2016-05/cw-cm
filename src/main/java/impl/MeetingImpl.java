@@ -10,6 +10,11 @@ import java.util.Set;
  * Created by Duncan on 04/03/2017.
  */
 public abstract class MeetingImpl implements Meeting {
+
+    private int id;
+    private Calendar date;
+    private Set<Contact> contacts;
+
     /**
      * constructor with three parameters:
      * @param ID
@@ -19,23 +24,37 @@ public abstract class MeetingImpl implements Meeting {
      * @throws IllegalArgumentException if the ID provided was non-positive or zero
      * @throws NullPointerException if any of the references / pointers passed as parameters is null
      */
-    MeetingImpl(int ID, Calendar date, Set<Contact> contacts){
+    public MeetingImpl(int ID, Calendar date, Set<Contact> contacts){
+
+        if(date==null||contacts==null){
+            throw new NullPointerException("one of the references / pointers passed as parameters is null");
+        }
+        if(contacts.isEmpty()){
+            throw new IllegalArgumentException("the set of contacts is empty");
+        }
+        if(ID<=0){
+            throw new IllegalArgumentException("the ID provided was non-positive or zero");
+        }
+
+        this.id = ID;
+        this.date = date;
+        this.contacts = contacts;
 
     }
 
-    MeetingImpl(){
+    public MeetingImpl(){
 
     }
 
     public int getId(){
-        return 0;
+        return id;
     }
 
     public Calendar getDate(){
-        return null;
+        return date;
     }
 
     public Set<Contact> getContacts(){
-        return null;
+        return contacts;
     }
 }

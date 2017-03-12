@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by Duncan on 04/03/2017.
  */
 public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting {
-    FutureMeetingImpl(int ID, Calendar date, Set<Contact> contacts){
-
+    public FutureMeetingImpl(int ID, Calendar date, Set<Contact> contacts){
+        super(ID, date, contacts);
     }
 }
