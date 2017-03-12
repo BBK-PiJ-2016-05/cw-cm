@@ -1,5 +1,6 @@
 package test.java.test;
 
+import main.java.impl.ContactImpl;
 import main.java.spec.Contact;
 import org.junit.After;
 import org.junit.Before;
@@ -7,6 +8,8 @@ import org.junit.Test;
 import main.java.spec.ContactManager;
 import main.java.impl.ContactManagerImpl;
 
+import java.util.Calendar;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -16,11 +19,31 @@ import static org.junit.Assert.*;
  */
 public class ContactManagerTest {
     private ContactManager myContactManager;
+    private Calendar todaysDate;
+    private Calendar futureDate;
+    private Calendar pastDate;
+    private Set<Contact> unknownPeople;
+    private Set<Contact> everyone;
 
 
     @Before
     public void setUp() throws Exception {
         myContactManager = new ContactManagerImpl();
+        todaysDate = Calendar.getInstance();
+        myContactManager.addNewContact("Duncan Jones", "Duncan is great");
+        myContactManager.addNewContact("Robert Jones", "Robert is Duncan's brother");
+        myContactManager.addNewContact("Geoff Jones", "Geoff is Duncan's father");
+        myContactManager.addNewContact("Jenny Denman", "Jenny is Duncan's aunt");
+        myContactManager.addNewContact("Phil Denman", "Phil is Duncan's uncle");
+        Calendar futureDate = Calendar.getInstance();
+        futureDate.add(Calendar.MONTH, 3);
+        Calendar pastDate = Calendar.getInstance();
+        futureDate.add(Calendar.MONTH, 3);
+        Contact unknownContact = new ContactImpl(12, "Freddie", "No one knows Freddie");
+        unknownPeople = new LinkedHashSet<Contact>();
+        unknownPeople.add(unknownContact);
+        everyone = myContactManager.getContacts("");
+
     }
 
     @After
@@ -29,7 +52,39 @@ public class ContactManagerTest {
     }
 
     @Test
-    public void addFutureMeeting() throws Exception {
+    public void testAddFutureMeetingExceptions(){
+
+        try {
+            myContactManager.addFutureMeeting(everyone, pastDate);
+            fail();
+        }
+        catch (IllegalArgumentException e){
+            assertEquals("the meeting is set for a time in the past",e.getMessage());
+        }
+
+        try {
+            myContactManager.addFutureMeeting(unknownPeople, futureDate);
+            fail();
+        }
+        catch (IllegalArgumentException e){
+            assertEquals("a contact is unknown or non-existent",e.getMessage());
+        }
+
+        try {
+            myContactManager.addFutureMeeting(null, futureDate);
+            fail();
+        }
+        catch (NullPointerException e){
+            assertEquals("the contact list or the date is null",e.getMessage());
+        }
+
+        try {
+            myContactManager.addFutureMeeting(everyone, null);
+            fail();
+        }
+        catch (NullPointerException e){
+            assertEquals("the contact list or the date is null",e.getMessage());
+        }
 
     }
 
@@ -122,14 +177,8 @@ public class ContactManagerTest {
 
     @Test
     public void testGetContactsUsingNames() {
-        myContactManager.addNewContact("Duncan Jones", "Duncan is great");
-        myContactManager.addNewContact("Robert Jones", "Robert is Duncan's brother");
-        myContactManager.addNewContact("Geoff Jones", "Geoff is Duncan's father");
-        myContactManager.addNewContact("Jenny Denman", "Jenny is Duncan's aunt");
-        myContactManager.addNewContact("Phil Denman", "Phil is Duncan's uncle");
         Set<Contact> theDenmans = myContactManager.getContacts("Denman");
         Set<Contact> theJoneses = myContactManager.getContacts("Jones");
-        Set<Contact> everyone = myContactManager.getContacts("");
         assertEquals(2, theDenmans.size());
         assertEquals(3, theJoneses.size());
         assertEquals(5, everyone.size());
@@ -151,11 +200,6 @@ public class ContactManagerTest {
 
     @Test
     public void testGetContactsUsingIds() {
-        myContactManager.addNewContact("Duncan Jones", "Duncan is great");
-        myContactManager.addNewContact("Robert Jones", "Robert is Duncan's brother");
-        myContactManager.addNewContact("Geoff Jones", "Geoff is Duncan's father");
-        myContactManager.addNewContact("Jenny Denman", "Jenny is Duncan's aunt");
-        myContactManager.addNewContact("Phil Denman", "Phil is Duncan's uncle");
         Set<Contact> theDenmans = myContactManager.getContacts(4, 5);
         Set<Contact> theJoneses = myContactManager.getContacts(1, 2, 3);
         Set<Contact> everyone = myContactManager.getContacts(1,2,3,4,5);
