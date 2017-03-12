@@ -1,10 +1,13 @@
 package test.java.test;
 
+import main.java.spec.Contact;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import main.java.spec.ContactManager;
 import main.java.impl.ContactManagerImpl;
+
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -118,8 +121,18 @@ public class ContactManagerTest {
 
 
     @Test
-    public void getContacts() throws Exception {
-
+    public void testGetContactsUsingNames() {
+        myContactManager.addNewContact("Duncan Jones", "Duncan is great");
+        myContactManager.addNewContact("Robert Jones", "Robert is Duncan's brother");
+        myContactManager.addNewContact("Geoff Jones", "Geoff is Duncan's father");
+        myContactManager.addNewContact("Jenny Denman", "Jenny is Duncan's aunt");
+        myContactManager.addNewContact("Phil Denman", "Phil is Duncan's uncle");
+        Set<Contact> theDenmans = myContactManager.getContacts("Denman");
+        Set<Contact> theJoneses = myContactManager.getContacts("Jones");
+        assertEquals(2, theDenmans.size());
+        assertEquals(3, theJoneses.size());
+        assertEquals("Duncan Jones", ((Contact) theJoneses.toArray()[0]).getName());
+        assertEquals("Phil is Duncan's aunt", ((Contact) theDenmans.toArray()[1]).getNotes());
     }
 
     @Test
