@@ -150,13 +150,24 @@ public class ContactManagerTest {
 
 
     @Test
-    public void getContacts1() throws Exception {
-
+    public void testGetContactsUsingIds() {
+        myContactManager.addNewContact("Duncan Jones", "Duncan is great");
+        myContactManager.addNewContact("Robert Jones", "Robert is Duncan's brother");
+        myContactManager.addNewContact("Geoff Jones", "Geoff is Duncan's father");
+        myContactManager.addNewContact("Jenny Denman", "Jenny is Duncan's aunt");
+        myContactManager.addNewContact("Phil Denman", "Phil is Duncan's uncle");
+        Set<Contact> theDenmans = myContactManager.getContacts(4, 5);
+        Set<Contact> theJoneses = myContactManager.getContacts(1, 2, 3);
+        Set<Contact> everyone = myContactManager.getContacts(1,2,3,4,5);
+        assertEquals(2, theDenmans.size());
+        assertEquals(3, theJoneses.size());
+        assertEquals(5, everyone.size());
+        assertEquals("Duncan Jones", ((Contact) theJoneses.toArray()[0]).getName());
+        assertEquals("Phil is Duncan's uncle", ((Contact) theDenmans.toArray()[1]).getNotes());
     }
 
     @Test
     public void flush() throws Exception {
 
     }
-
 }
