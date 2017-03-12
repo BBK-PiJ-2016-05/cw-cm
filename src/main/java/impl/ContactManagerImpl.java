@@ -75,7 +75,15 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(String name){
-        return null;
+
+        Set<Contact> contactsToReturn = new LinkedHashSet<Contact>();
+
+        for (Contact eachContact : allContacts){
+            if(eachContact.getName().contains(name)){
+                contactsToReturn.add(eachContact);
+            }
+        }
+        return contactsToReturn;
     }
 
     public Set<Contact> getContacts(int... ids){
