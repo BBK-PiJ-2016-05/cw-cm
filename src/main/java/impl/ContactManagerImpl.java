@@ -78,6 +78,10 @@ public class ContactManagerImpl implements ContactManager {
 
         Set<Contact> contactsToReturn = new LinkedHashSet<Contact>();
 
+        if(name==null){
+            throw new NullPointerException("the parameter is null");
+        }
+
         for (Contact eachContact : allContacts){
             if(eachContact.getName().contains(name)){
                 contactsToReturn.add(eachContact);

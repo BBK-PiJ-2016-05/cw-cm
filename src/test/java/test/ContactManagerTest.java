@@ -129,11 +129,25 @@ public class ContactManagerTest {
         myContactManager.addNewContact("Phil Denman", "Phil is Duncan's uncle");
         Set<Contact> theDenmans = myContactManager.getContacts("Denman");
         Set<Contact> theJoneses = myContactManager.getContacts("Jones");
+        Set<Contact> everyone = myContactManager.getContacts("");
         assertEquals(2, theDenmans.size());
         assertEquals(3, theJoneses.size());
+        assertEquals(5, everyone.size());
         assertEquals("Duncan Jones", ((Contact) theJoneses.toArray()[0]).getName());
-        assertEquals("Phil is Duncan's aunt", ((Contact) theDenmans.toArray()[1]).getNotes());
+        assertEquals("Phil is Duncan's uncle", ((Contact) theDenmans.toArray()[1]).getNotes());
     }
+
+    @Test
+    public void testGetContactsException(){
+        String emptyNameString = null;
+        try{
+            Set<Contact> emptySet = myContactManager.getContacts(emptyNameString);
+            fail();
+        } catch (NullPointerException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     @Test
     public void getContacts1() throws Exception {
