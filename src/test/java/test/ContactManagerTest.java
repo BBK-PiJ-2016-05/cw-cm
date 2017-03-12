@@ -121,7 +121,7 @@ public class ContactManagerTest {
     }
 
     @Test
-    public void testAddNewPastMeetingInTheFuture(){
+    public void testAddNewPastMeetingExceptions(){
         try {
             myContactManager.addNewPastMeeting(everyone, futureDate, "meeting notes");
             fail();
@@ -129,7 +129,13 @@ public class ContactManagerTest {
         catch (IllegalArgumentException e){
             assertEquals("the meeting is set for a time in the future",e.getMessage());
         }
-
+        try{
+            myContactManager.addNewPastMeeting(everyone, pastDate, null);
+            fail();
+        }
+        catch (NullPointerException e){
+            assertEquals("notes are null",e.getMessage());
+        }
     }
 
     @Test
