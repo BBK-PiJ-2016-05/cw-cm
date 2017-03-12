@@ -54,10 +54,6 @@ public class ContactManagerTest {
     @Test
     public void testAddFutureMeetingExceptions(){
 
-        if(pastDate==null){
-            System.out.println("pastDate is null");
-        }
-
         try {
             myContactManager.addFutureMeeting(everyone, pastDate);
             fail();
@@ -91,14 +87,16 @@ public class ContactManagerTest {
         }
 
     }
-
     @Test
-    public void getPastMeeting() throws Exception {
+    public void testGetFutureMeeting(){
+        int futureMeetingId = myContactManager.addFutureMeeting(everyone, futureDate);
+
+        //IllegalStateException
 
     }
 
     @Test
-    public void getFutureMeeting() throws Exception {
+    public void getPastMeeting() throws Exception {
 
     }
 
@@ -123,7 +121,14 @@ public class ContactManagerTest {
     }
 
     @Test
-    public void addNewPastMeeting() throws Exception {
+    public void testAddNewPastMeetingInTheFuture(){
+        try {
+            myContactManager.addNewPastMeeting(everyone, futureDate, "meeting notes");
+            fail();
+        }
+        catch (IllegalArgumentException e){
+            assertEquals("the meeting is set for a time in the future",e.getMessage());
+        }
 
     }
 
