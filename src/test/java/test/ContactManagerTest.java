@@ -118,8 +118,6 @@ public class ContactManagerTest {
 
     }
 
-
-
     @Test
     public void testGetMeetingLists(){
         Calendar date1 = Calendar.getInstance();

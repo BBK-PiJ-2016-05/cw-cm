@@ -20,8 +20,8 @@ import java.util.Set;
  */
 public class MeetingTest {
 
-    Calendar todaysDate;
-    Set<Contact> contacts;
+    private Calendar todaysDate;
+    private Set<Contact> contacts;
 
     @Before
     public void setUp(){
