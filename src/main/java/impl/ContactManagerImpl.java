@@ -59,14 +59,43 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public PastMeeting getPastMeeting(int id){
-        return null;
+        Calendar nowDate = Calendar.getInstance();
+        Meeting meetingToReturn = getMeeting(id);
+        if (meetingToReturn==null){
+            return null;
+        }
+        if (meetingToReturn.getDate().after(nowDate)){
+            throw new IllegalStateException("there is a meeting with this ID that happening in the future");
+        }
+        else{
+            return ((PastMeeting) meetingToReturn);
+        }
+
     }
 
     public FutureMeeting getFutureMeeting(int id){
-        return null;
+        Calendar nowDate = Calendar.getInstance();
+        Meeting meetingToReturn = getMeeting(id);
+        if (meetingToReturn==null){
+            return null;
+        }
+        if (meetingToReturn.getDate().before(nowDate)){
+            throw new IllegalStateException("there is a meeting with this ID that happened in the past");
+        }
+        else{
+            return ((FutureMeeting) meetingToReturn);
+        }
+
+
     }
 
     public Meeting getMeeting(int id){
+
+        for (Meeting eachMeeting : allMeetings){
+            if (eachMeeting.getId()==id){
+                return eachMeeting;
+            }
+        }
         return null;
     }
 

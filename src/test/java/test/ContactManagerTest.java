@@ -93,13 +93,15 @@ public class ContactManagerTest {
     public void testGetMeetings(){
         int futureMeetingId = myContactManager.addFutureMeeting(everyone, futureDate);
         int pastMeetingId = myContactManager.addNewPastMeeting(everyone, pastDate, "Some comment");
+        System.out.println(futureMeetingId);
+        System.out.println(pastMeetingId);
         Meeting anyMeeting = myContactManager.getMeeting(futureMeetingId);
         assertEquals(everyone,anyMeeting.getContacts());
         Meeting anyOtherMeeting = myContactManager.getMeeting(pastMeetingId);
         assertEquals(pastDate,anyOtherMeeting.getDate());
         Meeting futureMeeting = myContactManager.getFutureMeeting(futureMeetingId);
         assertEquals(futureDate,futureMeeting.getDate());
-        Meeting pastMeeting = myContactManager.getFutureMeeting(pastMeetingId);
+        Meeting pastMeeting = myContactManager.getPastMeeting(pastMeetingId);
         assertEquals("Some comment", ((PastMeeting) pastMeeting).getNotes());
 
         try{
