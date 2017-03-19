@@ -1,17 +1,15 @@
 package test.java.test;
 
 import main.java.impl.ContactImpl;
-import main.java.spec.Contact;
-import main.java.spec.Meeting;
-import main.java.spec.PastMeeting;
+import main.java.spec.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import main.java.spec.ContactManager;
 import main.java.impl.ContactManagerImpl;
 
 import java.util.Calendar;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -93,8 +91,6 @@ public class ContactManagerTest {
     public void testGetMeetings(){
         int futureMeetingId = myContactManager.addFutureMeeting(everyone, futureDate);
         int pastMeetingId = myContactManager.addNewPastMeeting(everyone, pastDate, "Some comment");
-        System.out.println(futureMeetingId);
-        System.out.println(pastMeetingId);
         Meeting anyMeeting = myContactManager.getMeeting(futureMeetingId);
         assertEquals(everyone,anyMeeting.getContacts());
         Meeting anyOtherMeeting = myContactManager.getMeeting(pastMeetingId);
@@ -125,18 +121,52 @@ public class ContactManagerTest {
 
 
     @Test
-    public void getFutureMeetingList() throws Exception {
+    public void testGetMeetingLists(){
+        Calendar date1 = Calendar.getInstance();
+        Calendar date2 = Calendar.getInstance();
+        Calendar date3 = Calendar.getInstance();
+        Calendar date4 = Calendar.getInstance();
+        Calendar date5 = Calendar.getInstance();
+        Calendar date6 = Calendar.getInstance();
+        date1.add(Calendar.MONTH, -3);
+        date2.add(Calendar.MONTH, -2);
+        date3.add(Calendar.MONTH, -1);
+        date4.add(Calendar.MONTH, +1);
+        date5.add(Calendar.MONTH, +2);
+        date6.add(Calendar.MONTH, +3);
+        Set<Contact> theDenmans = myContactManager.getContacts("Denman");
+        Set<Contact> theJoneses = myContactManager.getContacts("Jones");
+        myContactManager.addFutureMeeting(everyone,date4);
+        myContactManager.addFutureMeeting(theDenmans, date5);
+        myContactManager.addFutureMeeting(theJoneses, date6);
+        myContactManager.addNewPastMeeting(everyone, date1, "Comment 1");
+        myContactManager.addNewPastMeeting(theDenmans, date2, "Comment 2");
+        myContactManager.addNewPastMeeting(theJoneses, date3, "Comment 3");
+        Contact duncan = (Contact) myContactManager.getContacts("Duncan").toArray()[0];
 
-    }
+        List<Meeting> meetingDuncan = myContactManager.getFutureMeetingList(duncan);
+        assertEquals(meetingDuncan.get(0).getDate(),date4);
 
-    @Test
-    public void getMeetingListOn() throws Exception {
+        List<PastMeeting> haveMetDuncan = myContactManager.getPastMeetingListFor(duncan);
+        assertEquals(haveMetDuncan.get(0).getNotes(),"Comment 1");
 
-    }
+        List<Meeting> meetingsOnDate3 = myContactManager.getMeetingListOn(date3);
+        assertEquals(meetingsOnDate3.get(0).getContacts(),theJoneses);
 
-    @Test
-    public void getPastMeetingListFor() throws Exception {
-
+        try{
+            List<Meeting> meetingNoOne = myContactManager.getFutureMeetingList(new ContactImpl(1,"John Doe", "I don't know him"));
+            fail();
+        }
+        catch(IllegalArgumentException e){
+            assertEquals("a contact is unknown or non-existent", e.getMessage());
+        }
+        try{
+            List<Meeting> meetingNoOne = myContactManager.getFutureMeetingList(null);
+            fail();
+        }
+        catch(NullPointerException e){
+            assertEquals("contact is null", e.getMessage());
+        }
     }
 
     @Test

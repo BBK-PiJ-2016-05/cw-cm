@@ -26,6 +26,13 @@ public class ContactManagerImpl implements ContactManager {
         }
         return true;
     }
+    private boolean contactExist(Contact contact){
+        Set<Contact> setOfOneContact = new LinkedHashSet<Contact>();
+        setOfOneContact.add(contact);
+        return contactsExist(setOfOneContact);
+    }
+
+
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date){
         Meeting meetingToAdd;
@@ -100,15 +107,65 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact){
-        return null;
+
+        if(contact==null){
+            throw new NullPointerException("contact is null");
+        }
+        if(!contactExist(contact)){
+            throw new IllegalArgumentException("a contact is unknown or non-existent");
+        }
+
+        Calendar nowDate = Calendar.getInstance();
+        List<Meeting> meetingsToReturn = new ArrayList<Meeting>();
+
+        for (Meeting eachMeeting : allMeetings){
+            if (eachMeeting.getDate().after(nowDate)) {
+                for (Contact eachContact : eachMeeting.getContacts()) {
+                    if (eachContact.equals(contact)) {
+                        meetingsToReturn.add(eachMeeting);
+                    }
+                }
+            }
+        }
+
+        return meetingsToReturn;
     }
 
     public List<Meeting> getMeetingListOn(Calendar date){
-        return null;
+        if(date == null){
+            throw new NullPointerException(("date is null"));
+        }
+        List<Meeting> meetingsToReturn = new ArrayList<Meeting>();
+        for (Meeting eachMeeting : allMeetings){
+            if (eachMeeting.getDate().equals(date)){
+                meetingsToReturn.add(eachMeeting);
+            }
+        }
+        return meetingsToReturn;
     }
 
     public List<PastMeeting> getPastMeetingListFor(Contact contact){
-        return null;
+        if(contact==null){
+            throw new NullPointerException("contact is null");
+        }
+        if(!contactExist(contact)){
+            throw new IllegalArgumentException("a contact is unknown or non-existent");
+        }
+
+        Calendar nowDate = Calendar.getInstance();
+        List<PastMeeting> meetingsToReturn = new ArrayList<PastMeeting>();
+
+        for (Meeting eachMeeting : allMeetings){
+            if (eachMeeting.getDate().before(nowDate)) {
+                for (Contact eachContact : eachMeeting.getContacts()) {
+                    if (eachContact.equals(contact)) {
+                        meetingsToReturn.add((PastMeeting) eachMeeting);
+                    }
+                }
+            }
+        }
+
+        return meetingsToReturn;
     }
 
     public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text){
