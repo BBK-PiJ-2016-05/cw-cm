@@ -3,6 +3,7 @@ package test.java.test;
 import main.java.impl.ContactImpl;
 import main.java.spec.Contact;
 import main.java.spec.Meeting;
+import main.java.spec.PastMeeting;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,12 +94,17 @@ public class ContactManagerTest {
         int futureMeetingId = myContactManager.addFutureMeeting(everyone, futureDate);
         int pastMeetingId = myContactManager.addNewPastMeeting(everyone, pastDate, "Some comment");
         Meeting anyMeeting = myContactManager.getMeeting(futureMeetingId);
+        assertEquals(everyone,anyMeeting.getContacts());
         Meeting anyOtherMeeting = myContactManager.getMeeting(pastMeetingId);
+        assertEquals(pastDate,anyOtherMeeting.getDate());
         Meeting futureMeeting = myContactManager.getFutureMeeting(futureMeetingId);
+        assertEquals(futureDate,futureMeeting.getDate());
         Meeting pastMeeting = myContactManager.getFutureMeeting(pastMeetingId);
+        assertEquals("Some comment", ((PastMeeting) pastMeeting).getNotes());
 
         try{
             Meeting notFutureMeeting = myContactManager.getFutureMeeting(pastMeetingId);
+            fail();
         }
         catch (IllegalStateException e){
             assertEquals("there is a meeting with this ID that happened in the past",e.getMessage());
@@ -106,15 +112,15 @@ public class ContactManagerTest {
 
         try{
             Meeting notPastMeeting = myContactManager.getPastMeeting(futureMeetingId);
+            fail();
         }
         catch (IllegalStateException e){
             assertEquals("there is a meeting with this ID that happening in the future",e.getMessage());
         }
-        //IllegalStateException
 
     }
 
-    
+
 
     @Test
     public void getFutureMeetingList() throws Exception {
