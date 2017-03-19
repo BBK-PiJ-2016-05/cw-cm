@@ -2,6 +2,7 @@ package test.java.test;
 
 import main.java.impl.ContactImpl;
 import main.java.spec.Contact;
+import main.java.spec.Meeting;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,22 +89,32 @@ public class ContactManagerTest {
 
     }
     @Test
-    public void testGetFutureMeeting(){
+    public void testGetMeetings(){
         int futureMeetingId = myContactManager.addFutureMeeting(everyone, futureDate);
+        int pastMeetingId = myContactManager.addNewPastMeeting(everyone, pastDate, "Some comment");
+        Meeting anyMeeting = myContactManager.getMeeting(futureMeetingId);
+        Meeting anyOtherMeeting = myContactManager.getMeeting(pastMeetingId);
+        Meeting futureMeeting = myContactManager.getFutureMeeting(futureMeetingId);
+        Meeting pastMeeting = myContactManager.getFutureMeeting(pastMeetingId);
 
+        try{
+            Meeting notFutureMeeting = myContactManager.getFutureMeeting(pastMeetingId);
+        }
+        catch (IllegalStateException e){
+            assertEquals("there is a meeting with this ID that happened in the past",e.getMessage());
+        }
+
+        try{
+            Meeting notPastMeeting = myContactManager.getPastMeeting(futureMeetingId);
+        }
+        catch (IllegalStateException e){
+            assertEquals("there is a meeting with this ID that happening in the future",e.getMessage());
+        }
         //IllegalStateException
 
     }
 
-    @Test
-    public void getPastMeeting() throws Exception {
-
-    }
-
-    @Test
-    public void getMeeting() throws Exception {
-
-    }
+    
 
     @Test
     public void getFutureMeetingList() throws Exception {
